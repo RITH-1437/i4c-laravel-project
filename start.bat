@@ -36,6 +36,10 @@ REM Generate key
 echo 🔑 Generating application key...
 docker-compose exec -T app php artisan key:generate
 
+REM Create SQLite database
+echo 💾 Creating SQLite database...
+docker-compose exec -T app touch storage/database/database.sqlite
+
 echo.
 echo ✅ Setup complete!
 echo.

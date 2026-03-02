@@ -15,6 +15,9 @@ docker-compose exec app composer install
 
 # Generate app key
 docker-compose exec app php artisan key:generate
+
+# Create SQLite database
+docker-compose exec app touch storage/database/database.sqlite
 ```
 
 ### 2. Open in Browser

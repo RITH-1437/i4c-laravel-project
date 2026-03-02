@@ -14,31 +14,9 @@ services:
       - .:/var/www/html
     networks:
       - laravel
-    depends_on:
-      - db
     environment:
       - APP_ENV=local
       - APP_DEBUG=true
-      - DB_HOST=db
-      - DB_DATABASE=laravel
-      - DB_USERNAME=laravel
-      - DB_PASSWORD=secret
-
-  db:
-    image: mysql:8.0
-    container_name: laravel_db
-    restart: unless-stopped
-    environment:
-      MYSQL_DATABASE: laravel
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_USER: laravel
-      MYSQL_PASSWORD: secret
-    ports:
-      - "3306:3306"
-    volumes:
-      - dbdata:/var/lib/mysql
-    networks:
-      - laravel
 
   jenkins:
     image: jenkins/jenkins:lts
@@ -55,8 +33,6 @@ services:
       - laravel
 
 volumes:
-  dbdata:
-    driver: local
   jenkins_home:
     driver: local
 

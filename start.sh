@@ -34,6 +34,10 @@ docker-compose exec -T app composer install --ignore-platform-reqs
 echo "🔑 Generating application key..."
 docker-compose exec -T app php artisan key:generate
 
+# Create SQLite database
+echo "💾 Creating SQLite database..."
+docker-compose exec -T app touch storage/database/database.sqlite
+
 echo ""
 echo "✅ Setup complete!"
 echo ""

@@ -1,6 +1,6 @@
 # 🚀 Laravel DevOps Project
 
-Simple Laravel application with Docker and Jenkins CI/CD pipeline for DevOps practice.
+Simple Laravel application with Docker, SQLite, and Jenkins CI/CD pipeline for DevOps practice.
 
 ---
 
@@ -48,7 +48,7 @@ copy .env.example .env
 
 ### Step 3: Start Docker Containers
 
-Run all services (Laravel App, MySQL, Jenkins):
+Run all services (Laravel App, Jenkins):
 ```bash
 docker-compose up -d
 ```
@@ -66,6 +66,11 @@ docker-compose exec app composer install
 Generate application key:
 ```bash
 docker-compose exec app php artisan key:generate
+```
+
+Create SQLite database:
+```bash
+docker-compose exec app touch storage/database/database.sqlite
 ```
 
 ---
