@@ -79,6 +79,12 @@
         state: directory
         mode: '0755'
 
+    - name: Create database directory
+      file:
+        path: "{{ app_path }}/database"
+        state: directory
+        mode: '0755'
+
     - name: Create SQLite database
       file:
         path: "{{ app_path }}/database/database.sqlite"
