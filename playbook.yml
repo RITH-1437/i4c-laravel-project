@@ -7,6 +7,13 @@
     repo_url: https://github.com/RITH-1437/i4c-laravel-project.git
     
   tasks:
+    - name: Remove broken PHP repository
+      shell: |
+        rm -f /etc/apt/sources.list.d/php.list
+        rm -f /usr/share/keyrings/sury-php.gpg
+        apt-get update || true
+      ignore_errors: yes
+
     - name: Update apt cache
       apt:
         update_cache: yes
