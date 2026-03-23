@@ -24,7 +24,7 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 bat '''
-                    docker run --rm -v "%cd%":/app composer:latest install --ignore-platform-reqs --no-dev --optimize-autoloader
+                    docker run --rm -v "%cd%":/app composer:latest install --ignore-platform-reqs --no-dev --optimize-autoloader --no-scripts
                 '''
             }
         }
