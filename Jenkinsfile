@@ -32,7 +32,7 @@ pipeline {
         stage('Deploy with Ansible') {
             steps {
                 bat '''
-                    docker exec jenkins-laravel-agent ansible-playbook -i /var/jenkins_home/workspace/Laravel-TP03/inventory /var/jenkins_home/workspace/Laravel-TP03/playbook.yml -v
+                    docker exec jenkins-laravel-agent ansible-playbook -i /workspace/Laravel-TP03/inventory /workspace/Laravel-TP03/playbook.yml -v
                 '''
             }
         }
