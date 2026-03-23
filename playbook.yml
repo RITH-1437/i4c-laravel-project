@@ -56,7 +56,7 @@
       composer:
         working_dir: "{{ app_path }}"
         no_dev: no
-        optimize: yes
+        optimize_autoloader: yes
       environment:
         COMPOSER_ALLOW_SUPERUSER: "1"
         COMPOSER_NO_INTERACTION: "1"
