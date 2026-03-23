@@ -1,14 +1,8 @@
 pipeline {
-    agent {
-        docker {
-            image 'php:8.2-cli'
-            args '-u root'
-        }
-    }
+    agent any
     
     environment {
         DEPLOY_HOST = '178.128.93.188'
-        SERVER_PASSWORD = credentials('server-password')
     }
     
     stages {
@@ -20,55 +14,40 @@ pipeline {
         
         stage('Environment Setup') {
             steps {
-                sh '''
-                    if [ ! -f .env ]; then
-                        cp .env.example .env
-                    fi
-                '''
-            }
-        }
-        
-        stage('Install Composer') {
-            steps {
-                sh '''
-                    apt-get update && apt-get install -y git curl unzip
-                    curl -sS https://getcomposer.org/installer | php
-                    mv composer.phar /usr/local/bin/composer
-                    chmod +x /usr/local/bin/composer
+                bat '''
+                    if not exist .env copy .env.example .env
                 '''
             }
         }
         
         stage('Install Dependencies') {
             steps {
-                sh '''
-                    composer install --ignore-platform-reqs --no-dev --optimize-autoloader
+                bat '''
+                    docker run --rm -v "%cd%":/app composer:latest install --ignore-platform-reqs --no-dev --optimize-autoloader
                 '''
             }
         }
         
         stage('Generate Key') {
             steps {
-                sh '''
-                    php artisan key:generate --force || true
+                bat '''
+                    docker run --rm -v "%cd%":/app php:8.2-cli php /app/artisan key:generate --force
                 '''
             }
         }
         
         stage('Deploy with Ansible') {
             steps {
-                sh '''
-                    pip3 install --break-system-packages ansible pywinrm || true
-                    ansible-playbook -i inventory playbook.yml -v || echo "Ansible deploy skipped"
+                bat '''
+                    docker exec jenkins-laravel-agent ansible-playbook -i /var/jenkins_home/workspace/Laravel-TP03/inventory /var/jenkins_home/workspace/Laravel-TP03/playbook.yml -v
                 '''
             }
         }
         
         stage('Health Check') {
             steps {
-                sh '''
-                    sleep 10
-                    curl -f --connect-timeout 30 http://${DEPLOY_HOST}/ || echo "Health check completed"
+                bat '''
+                    curl -f --connect-timeout 30 http://178.128.93.188/ || echo Health check completed
                 '''
             }
         }
