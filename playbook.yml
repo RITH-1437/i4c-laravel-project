@@ -62,12 +62,12 @@
         COMPOSER_ALLOW_SUPERUSER: "1"
         COMPOSER_NO_INTERACTION: "1"
 
-    - name: Create .env file
+    - name: Create .env file with APP_KEY
       copy:
         content: |
           APP_NAME="I4C Laravel"
           APP_ENV=production
-          APP_KEY=
+          APP_KEY=base64:rGdF8s5KHJqPqYmX7w3LvN2cE6kR9xZnT4jV8aB1gU0=
           APP_DEBUG=false
           APP_URL=http://178.128.93.188
           DB_CONNECTION=sqlite
@@ -78,11 +78,6 @@
         path: "{{ app_path }}/bootstrap/cache"
         state: directory
         mode: '0755'
-
-    - name: Generate application key
-      shell: |
-        cd {{ app_path }}
-        php artisan key:generate --force
 
     - name: Create SQLite database
       file:
