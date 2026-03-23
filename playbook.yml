@@ -1,0 +1,121 @@
+---
+- name: Deploy Laravel Application to Production
+  hosts: deploy
+  become: yes
+  vars:
+    app_path: /var/www/laravel
+    repo_url: https://github.com/RITH-1437/i4c-laravel-project.git
+    
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+      when: ansible_os_family == "Debian"
+
+    - name: Install required packages
+      apt:
+        name:
+          - nginx
+          - php8.2-fpm
+          - php8.2-mysql
+          - php8.2-cli
+          - php8.2-xml
+          - php8.2-mbstring
+          - php8.2-curl
+          - php8.2-zip
+          - php8.2-gd
+          - php8.2-bcmath
+          - unzip
+          - git
+          - curl
+          - sqlite3
+        state: present
+
+    - name: Install Composer
+      shell: |
+        curl -sS https://getcomposer.org/installer | php
+        mv composer.phar /usr/local/bin/composer
+        chmod +x /usr/local/bin/composer
+      args:
+        creates: /usr/local/bin/composer
+
+    - name: Create deployment directory
+      file:
+        path: "{{ app_path }}"
+        state: directory
+        mode: '0755'
+
+    - name: Clone or update repository
+      git:
+        repo: "{{ repo_url }}"
+        dest: "{{ app_path }}"
+        force: yes
+        accept_hostkey: yes
+
+    - name: Install PHP dependencies with Composer
+      composer:
+        working_dir: "{{ app_path }}"
+        no_dev: no
+        optimize: yes
+      environment:
+        COMPOSER_ALLOW_SUPERUSER: "1"
+        COMPOSER_NO_INTERACTION: "1"
+
+    - name: Create .env file
+      copy:
+        content: |
+          APP_NAME="I4C Laravel"
+          APP_ENV=production
+          APP_KEY=
+          APP_DEBUG=false
+          APP_URL=http://178.128.93.188
+          DB_CONNECTION=sqlite
+        dest: "{{ app_path }}/.env"
+
+    - name: Generate application key
+      shell: |
+        cd {{ app_path }}
+        php artisan key:generate --force
+
+    - name: Create SQLite database
+      file:
+        path: "{{ app_path }}/database/database.sqlite"
+        state: touch
+
+    - name: Set storage permissions
+      shell: |
+        chmod -R 777 {{ app_path }}/storage
+        chmod -R 777 {{ app_path }}/bootstrap/cache
+
+    - name: Create Nginx configuration
+      template:
+        src: nginx.conf.j2
+        dest: /etc/nginx/sites-available/laravel
+      notify: Restart Nginx
+
+    - name: Enable Laravel site
+      file:
+        src: /etc/nginx/sites-available/laravel
+        dest: /etc/nginx/sites-enabled/laravel
+        state: link
+      notify: Restart Nginx
+
+    - name: Remove default nginx site
+      file:
+        path: /etc/nginx/sites-enabled/default
+        state: absent
+      notify: Restart Nginx
+
+    - name: Test nginx configuration
+      shell: nginx -t
+
+  handlers:
+    - name: Restart Nginx
+      service:
+        name: nginx
+        state: restarted
+
+    - name: Restart PHP-FPM
+      service:
+        name: php8.2-fpm
+        state: restarted

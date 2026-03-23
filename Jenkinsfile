@@ -3,7 +3,7 @@ pipeline {
     
     environment {
         APP_NAME = 'laravel-app'
-        DOCKER_IMAGE = 'laravel-devops-app'
+        DEPLOY_HOST = '178.128.93.188'
     }
     
     stages {
@@ -38,37 +38,26 @@ pipeline {
             steps {
                 echo 'Running PHPUnit tests...'
                 sh '''
-                    docker run --rm -v $(pwd):/app -w /app php:8.1-cli php vendor/bin/phpunit || true
+                    docker run --rm -v $(pwd):/app -w /app php:8.2-cli php vendor/bin/phpunit || true
                 '''
             }
         }
         
-        stage('Build Docker Image') {
+        stage('Deploy with Ansible') {
             steps {
-                echo 'Building Docker image...'
+                echo 'Deploying to ${DEPLOY_HOST} with Ansible...'
                 sh '''
-                    docker build -t ${DOCKER_IMAGE}:${BUILD_NUMBER} .
-                    docker tag ${DOCKER_IMAGE}:${BUILD_NUMBER} ${DOCKER_IMAGE}:latest
-                '''
-            }
-        }
-        
-        stage('Deploy') {
-            steps {
-                echo 'Deploying application...'
-                sh '''
-                    docker-compose down || true
-                    docker-compose up -d
+                    ansible-playbook -i inventory playbook.yml -v
                 '''
             }
         }
         
         stage('Health Check') {
             steps {
-                echo 'Performing health check...'
+                echo 'Performing health check on deployed server...'
                 sh '''
-                    sleep 10
-                    curl -f http://localhost:8000/health || exit 1
+                    sleep 15
+                    curl -f --connect-timeout 30 http://${DEPLOY_HOST}/ || exit 1
                 '''
             }
         }
@@ -76,14 +65,10 @@ pipeline {
     
     post {
         success {
-            echo '✅ Pipeline completed successfully!'
+            echo 'Pipeline completed successfully!'
         }
         failure {
-            echo '❌ Pipeline failed!'
-        }
-        always {
-            echo 'Cleaning up...'
-            sh 'docker system prune -f || true'
+            echo 'Pipeline failed!'
         }
     }
 }
