@@ -29,14 +29,6 @@ pipeline {
             }
         }
         
-        stage('Generate Key') {
-            steps {
-                bat '''
-                    docker run --rm -v "%cd%":/app php:8.2-cli php /app/artisan key:generate --force
-                '''
-            }
-        }
-        
         stage('Deploy with Ansible') {
             steps {
                 bat '''
