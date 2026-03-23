@@ -73,6 +73,12 @@
           DB_CONNECTION=sqlite
         dest: "{{ app_path }}/.env"
 
+    - name: Create bootstrap cache directory
+      file:
+        path: "{{ app_path }}/bootstrap/cache"
+        state: directory
+        mode: '0755'
+
     - name: Generate application key
       shell: |
         cd {{ app_path }}
