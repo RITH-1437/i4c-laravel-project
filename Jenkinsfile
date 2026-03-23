@@ -16,6 +16,7 @@ pipeline {
             steps {
                 bat '''
                     if not exist .env copy .env.example .env
+                    if not exist bootstrap\\cache mkdir bootstrap\\cache
                 '''
             }
         }
