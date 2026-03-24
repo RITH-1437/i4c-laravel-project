@@ -15,18 +15,7 @@ pipeline {
         
         stage('Prepare Environment') {
             steps {
-                bat '''
-                    if not exist .env copy .env.example .env
-                    if not exist bootstrap\\cache mkdir bootstrap\\cache
-                '''
-            }
-        }
-        
-        stage('Build with Docker') {
-            steps {
-                bat '''
-                    docker run --rm -v "%%cd%%":/app composer:latest install --ignore-platform-reqs --optimize-autoloader --no-scripts
-                '''
+                echo 'Environment preparation - files will be deployed via Ansible'
             }
         }
         
@@ -41,7 +30,7 @@ pipeline {
         stage('Health Check') {
             steps {
                 bat '''
-                    curl --connect-timeout 30 -s http://178.128.93.188/ | findstr "Laravel"
+                    curl --connect-timeout 30 -s http://178.128.93.188/RIN-Nairith/ | findstr "Laravel"
                     if %%errorlevel%% neq 0 (
                         echo Website loaded but may not contain expected content
                     )
@@ -55,8 +44,8 @@ pipeline {
         success {
             echo '==========================================='
             echo '  Laravel CI/CD Pipeline Completed!'
-            echo '  Website: http://178.128.93.188/'
-            echo '  Health:  http://178.128.93.188/api/health'
+            echo '  Website: http://178.128.93.188/RIN-Nairith/'
+            echo '  Health:  http://178.128.93.188/RIN-Nairith/api/health'
             echo '==========================================='
         }
         failure {
