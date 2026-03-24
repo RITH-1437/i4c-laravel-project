@@ -3,7 +3,7 @@
   hosts: deploy
   become: yes
   vars:
-    app_path: /var/www/laravel
+    app_path: /var/www/html/RIN-Nairith
     repo_url: https://github.com/RITH-1437/i4c-laravel-project.git
     
   tasks:
@@ -77,7 +77,7 @@
           APP_ENV=production
           APP_KEY=base64:rGdF8s5KHJqPqYmX7w3LvN2cE6kR9xZnT4jV8aB1gU0=
           APP_DEBUG=false
-          APP_URL=http://178.128.93.188
+          APP_URL=http://178.128.93.188/RIN-Nairith
           DB_CONNECTION=sqlite
         dest: "{{ app_path }}/.env"
 

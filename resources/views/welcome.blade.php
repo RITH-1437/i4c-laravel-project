@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Laravel DevOps - Interactive Dashboard</title>
+    <title>RIN-Nairith - Laravel DevOps Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
@@ -366,7 +366,7 @@
     </div>
     
     <div class="container">
-        <h1>🚀 Laravel DevOps Dashboard</h1>
+        <h1>🚀 RIN-Nairith DevOps Dashboard</h1>
         <p class="subtitle">Welcome to the modern Laravel CI/CD pipeline</p>
         
         <div class="status-indicator">
