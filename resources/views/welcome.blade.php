@@ -149,6 +149,15 @@
             transform: translateY(0);
         }
         
+        button.danger {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+        }
+        
+        button.danger:hover {
+            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+        }
+        
         button.secondary {
             background: linear-gradient(135deg, #334155 0%, #1e293b 100%);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
@@ -165,6 +174,84 @@
         
         button.success:hover {
             box-shadow: 0 6px 20px rgba(34, 197, 94, 0.4);
+        }
+        
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(30, 41, 59, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(51, 65, 85, 0.8);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 24px;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .theme-toggle:hover {
+            transform: scale(1.1);
+            border-color: rgba(0, 153, 255, 0.5);
+        }
+        
+        body.light-mode {
+            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+            color: #1e293b;
+        }
+        
+        body.light-mode .card {
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(203, 213, 225, 0.8);
+        }
+        
+        body.light-mode .card:hover {
+            border-color: rgba(0, 153, 255, 0.5);
+        }
+        
+        body.light-mode .card-title {
+            color: #1e293b;
+        }
+        
+        body.light-mode input[type="text"] {
+            background: rgba(241, 245, 249, 0.8);
+            border: 1px solid rgba(203, 213, 225, 0.8);
+            color: #1e293b;
+        }
+        
+        body.light-mode input[type="text"]::placeholder {
+            color: #94a3b8;
+        }
+        
+        body.light-mode .message-box {
+            background: rgba(241, 245, 249, 0.8);
+            border-left: 3px solid #0099ff;
+            color: #1e293b;
+        }
+        
+        body.light-mode .subtitle {
+            color: #64748b;
+        }
+        
+        body.light-mode .theme-toggle {
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(203, 213, 225, 0.8);
+        }
+        
+        body.light-mode footer {
+            border-top: 1px solid rgba(203, 213, 225, 0.5);
+            color: #64748b;
+        }
+        
+        .validation-error {
+            color: #ef4444;
+            font-size: 13px;
+            margin-top: 8px;
         }
         
         input[type="text"] {
@@ -277,6 +364,10 @@
     </style>
 </head>
 <body>
+    <div class="theme-toggle" onclick="toggleTheme()" title="Toggle Theme">
+        <span id="theme-icon">🌙</span>
+    </div>
+    
     <div class="container">
         <header>
             <h1>RIN-Nairith Laravel DevOps</h1>
@@ -296,7 +387,7 @@
                 <div class="counter-display" id="counter">0</div>
                 <div class="button-group">
                     <button onclick="increment()">+ Increment</button>
-                    <button class="secondary" onclick="decrement()">- Decrement</button>
+                    <button class="danger" onclick="decrement()">- Decrement</button>
                     <button class="success" onclick="reset()">Reset</button>
                 </div>
             </div>
@@ -307,9 +398,10 @@
                     Greeting
                 </div>
                 <div class="input-group">
-                    <input type="text" id="name-input" placeholder="Enter your name">
+                    <input type="text" id="name-input" placeholder="Enter your name (letters only)" maxlength="30">
                     <button onclick="greet()">Greet</button>
                 </div>
+                <div class="validation-error" id="validation-error"></div>
                 <div class="greeting-result" id="greeting-result"></div>
             </div>
         </div>
@@ -363,6 +455,57 @@
         
         const greetings = ["Hello", "Hi", "Hey", "Welcome", "Greetings"];
         
+        // Theme toggle functionality
+        function toggleTheme() {
+            document.body.classList.toggle('light-mode');
+            const icon = document.getElementById('theme-icon');
+            if (document.body.classList.contains('light-mode')) {
+                icon.textContent = '☀️';
+                localStorage.setItem('theme', 'light');
+            } else {
+                icon.textContent = '🌙';
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+        
+        // Load saved theme
+        window.addEventListener('DOMContentLoaded', function() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'light') {
+                document.body.classList.add('light-mode');
+                document.getElementById('theme-icon').textContent = '☀️';
+            }
+        });
+        
+        // Input validation for name field - only alphabets and spaces
+        document.getElementById('name-input').addEventListener('input', function(e) {
+            const value = e.target.value;
+            const validationError = document.getElementById('validation-error');
+            
+            // Remove any non-alphabetic characters except spaces
+            const sanitized = value.replace(/[^a-zA-Z\s]/g, '');
+            
+            if (value !== sanitized) {
+                e.target.value = sanitized;
+                validationError.textContent = 'Only letters and spaces are allowed';
+                setTimeout(() => {
+                    validationError.textContent = '';
+                }, 2000);
+            }
+        });
+        
+        // Prevent non-alphabetic input on keypress
+        document.getElementById('name-input').addEventListener('keypress', function(e) {
+            const char = String.fromCharCode(e.which);
+            if (!/[a-zA-Z\s]/.test(char)) {
+                e.preventDefault();
+                document.getElementById('validation-error').textContent = 'Only letters and spaces are allowed';
+                setTimeout(() => {
+                    document.getElementById('validation-error').textContent = '';
+                }, 2000);
+            }
+        });
+        
         function updateTime() {
             const now = new Date();
             document.getElementById('server-time').textContent = now.toLocaleString();
@@ -392,13 +535,24 @@
         
         function greet() {
             const name = document.getElementById('name-input').value.trim();
-            if (name) {
-                const greeting = greetings[Math.floor(Math.random() * greetings.length)];
-                document.getElementById('greeting-result').innerHTML = '<span class="success-text">' + greeting + ', ' + name + '</span>';
-                document.getElementById('message').textContent = 'Welcome ' + name;
-            } else {
+            const validationError = document.getElementById('validation-error');
+            
+            // Validate name contains only letters and spaces
+            if (!name) {
                 document.getElementById('greeting-result').innerHTML = '<span class="error-text">Please enter your name</span>';
+                return;
             }
+            
+            if (!/^[a-zA-Z\s]+$/.test(name)) {
+                validationError.textContent = 'Name must contain only letters and spaces';
+                document.getElementById('greeting-result').innerHTML = '';
+                return;
+            }
+            
+            validationError.textContent = '';
+            const greeting = greetings[Math.floor(Math.random() * greetings.length)];
+            document.getElementById('greeting-result').innerHTML = '<span class="success-text">' + greeting + ', ' + name + '</span>';
+            document.getElementById('message').textContent = 'Welcome ' + name;
         }
         
         function checkHealth() {
