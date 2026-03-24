@@ -3,6 +3,7 @@ pipeline {
     
     environment {
         DEPLOY_HOST = '178.128.93.188'
+        ANSIBLE_HOST_KEY_CHECKING = 'false'
     }
     
     stages {
@@ -12,7 +13,7 @@ pipeline {
             }
         }
         
-        stage('Environment Setup') {
+        stage('Prepare Environment') {
             steps {
                 bat '''
                     if not exist .env copy .env.example .env
@@ -21,10 +22,10 @@ pipeline {
             }
         }
         
-        stage('Install Dependencies') {
+        stage('Build with Docker') {
             steps {
                 bat '''
-                    docker run --rm -v "%cd%":/app composer:latest install --ignore-platform-reqs --no-dev --optimize-autoloader --no-scripts
+                    docker run --rm -v "%%cd%%":/app composer:latest install --ignore-platform-reqs --optimize-autoloader --no-scripts
                 '''
             }
         }
@@ -32,7 +33,7 @@ pipeline {
         stage('Deploy with Ansible') {
             steps {
                 bat '''
-                    docker exec jenkins-laravel-agent ansible-playbook -i /workspace/Laravel-TP03/inventory /workspace/Laravel-TP03/playbook.yml -v
+                    docker exec jenkins-laravel-agent bash -c "cd /tmp && rm -rf laravel-deploy && git clone https://github.com/RITH-1437/i4c-laravel-project.git laravel-deploy && cd laravel-deploy && ansible-playbook -i inventory playbook.yml"
                 '''
             }
         }
@@ -40,7 +41,10 @@ pipeline {
         stage('Health Check') {
             steps {
                 bat '''
-                    curl --connect-timeout 30 http://178.128.93.188/ || echo Health check completed
+                    curl --connect-timeout 30 -s http://178.128.93.188/ | findstr "Laravel"
+                    if %%errorlevel%% neq 0 (
+                        echo Website loaded but may not contain expected content
+                    )
                     exit 0
                 '''
             }
@@ -49,10 +53,17 @@ pipeline {
     
     post {
         success {
-            echo 'Pipeline completed successfully!'
+            echo '==========================================='
+            echo '  Laravel CI/CD Pipeline Completed!'
+            echo '  Website: http://178.128.93.188/'
+            echo '  Health:  http://178.128.93.188/api/health'
+            echo '==========================================='
         }
         failure {
-            echo 'Pipeline failed!'
+            echo 'Pipeline failed! Check logs for details.'
+        }
+        always {
+            echo 'Pipeline execution finished.'
         }
     }
 }

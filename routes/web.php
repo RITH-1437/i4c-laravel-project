@@ -3,16 +3,13 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return response()->json([
-        'name' => 'Laravel Application',
-        'status' => 'running',
-        'version' => '10.x'
-    ]);
+    return view('welcome');
 });
 
-Route::get('/health', function () {
+Route::get('/api/health', function () {
     return response()->json([
         'status' => 'OK',
-        'message' => 'Application is running'
+        'message' => 'Application is running',
+        'timestamp' => date('Y-m-d H:i:s')
     ]);
 });
