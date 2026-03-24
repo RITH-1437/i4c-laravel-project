@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RIN-Nairith - Laravel DevOps</title>
     <link rel="icon" type="image/svg+xml" href="https://laravel.com/img/logomark.min.svg">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -13,194 +14,264 @@
         }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
-            background: #000;
-            color: #fff;
-            padding: 20px;
-            line-height: 1.6;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
+            color: #e4e4e7;
+            min-height: 100vh;
+            padding: 40px 20px;
         }
         
         .container {
-            max-width: 800px;
+            max-width: 1000px;
             margin: 0 auto;
         }
         
         header {
-            border-bottom: 1px solid #333;
-            padding-bottom: 20px;
-            margin-bottom: 30px;
+            text-align: center;
+            margin-bottom: 50px;
         }
         
         h1 {
-            font-size: 24px;
-            font-weight: 600;
-            margin-bottom: 8px;
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #00d4ff 0%, #0099ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
         
         .subtitle {
-            color: #888;
-            font-size: 14px;
+            color: #94a3b8;
+            font-size: 16px;
+            margin-bottom: 20px;
         }
         
-        .status {
-            display: inline-block;
-            background: #1a1a1a;
-            padding: 4px 12px;
-            border-radius: 4px;
-            font-size: 13px;
-            margin-top: 12px;
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            color: #22c55e;
         }
         
         .status-dot {
-            display: inline-block;
             width: 8px;
             height: 8px;
-            background: #0f0;
+            background: #22c55e;
             border-radius: 50%;
-            margin-right: 6px;
+            animation: pulse 2s ease-in-out infinite;
         }
         
-        section {
-            background: #0a0a0a;
-            border: 1px solid #1a1a1a;
-            padding: 20px;
-            margin-bottom: 20px;
-            border-radius: 4px;
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
         }
         
-        h2 {
-            font-size: 16px;
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .card {
+            background: rgba(30, 41, 59, 0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(51, 65, 85, 0.8);
+            border-radius: 12px;
+            padding: 25px;
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover {
+            border-color: rgba(0, 153, 255, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 153, 255, 0.1);
+        }
+        
+        .card-title {
+            font-size: 18px;
             font-weight: 600;
-            margin-bottom: 15px;
-            border-bottom: 1px solid #1a1a1a;
-            padding-bottom: 8px;
+            margin-bottom: 20px;
+            color: #f1f5f9;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .icon {
+            font-size: 20px;
         }
         
         .counter-display {
-            font-size: 48px;
+            font-size: 64px;
             font-weight: 700;
-            color: #fff;
             text-align: center;
-            margin: 20px 0;
+            margin: 30px 0;
+            background: linear-gradient(135deg, #00d4ff 0%, #0099ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
         
         .button-group {
             display: flex;
-            gap: 10px;
+            gap: 12px;
             flex-wrap: wrap;
         }
         
         button {
-            background: #fff;
-            color: #000;
+            flex: 1;
+            min-width: 120px;
+            background: linear-gradient(135deg, #0099ff 0%, #0066cc 100%);
+            color: #fff;
             border: none;
-            padding: 10px 20px;
-            border-radius: 4px;
+            padding: 12px 24px;
+            border-radius: 8px;
             cursor: pointer;
             font-size: 14px;
-            font-weight: 500;
-            transition: background 0.2s;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 153, 255, 0.3);
         }
         
         button:hover {
-            background: #e0e0e0;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 153, 255, 0.4);
         }
         
         button:active {
-            background: #d0d0d0;
+            transform: translateY(0);
+        }
+        
+        button.secondary {
+            background: linear-gradient(135deg, #334155 0%, #1e293b 100%);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+        
+        button.secondary:hover {
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+        }
+        
+        button.success {
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+            box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+        }
+        
+        button.success:hover {
+            box-shadow: 0 6px 20px rgba(34, 197, 94, 0.4);
         }
         
         input[type="text"] {
-            background: #1a1a1a;
-            border: 1px solid #333;
-            color: #fff;
-            padding: 10px 15px;
-            border-radius: 4px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(51, 65, 85, 0.8);
+            color: #e4e4e7;
+            padding: 12px 16px;
+            border-radius: 8px;
             font-size: 14px;
-            width: 100%;
-            max-width: 300px;
+            flex: 1;
+            min-width: 200px;
+            transition: all 0.3s ease;
         }
         
         input[type="text"]:focus {
             outline: none;
-            border-color: #555;
+            border-color: #0099ff;
+            box-shadow: 0 0 0 3px rgba(0, 153, 255, 0.1);
+        }
+        
+        input[type="text"]::placeholder {
+            color: #64748b;
         }
         
         .input-group {
             display: flex;
-            gap: 10px;
+            gap: 12px;
             margin-bottom: 15px;
             flex-wrap: wrap;
-            align-items: center;
         }
         
         .message-box {
-            background: #1a1a1a;
-            padding: 15px;
-            border-radius: 4px;
-            margin: 15px 0;
-            min-height: 50px;
+            background: rgba(15, 23, 42, 0.6);
+            border-left: 3px solid #0099ff;
+            padding: 16px 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            min-height: 60px;
             display: flex;
             align-items: center;
-            border-left: 3px solid #333;
         }
         
         .greeting-result {
-            margin-top: 10px;
-            font-size: 16px;
+            margin-top: 15px;
+            font-size: 18px;
+            color: #00d4ff;
         }
         
         .tech-stack {
             display: flex;
-            gap: 10px;
+            gap: 12px;
             flex-wrap: wrap;
+            margin-bottom: 20px;
         }
         
         .tech-badge {
-            background: #1a1a1a;
-            border: 1px solid #333;
-            padding: 6px 12px;
-            border-radius: 4px;
+            background: rgba(0, 153, 255, 0.1);
+            border: 1px solid rgba(0, 153, 255, 0.3);
+            padding: 8px 16px;
+            border-radius: 20px;
             font-size: 13px;
+            font-weight: 500;
+            color: #00d4ff;
+            transition: all 0.3s ease;
+        }
+        
+        .tech-badge:hover {
+            background: rgba(0, 153, 255, 0.2);
+            transform: translateY(-2px);
         }
         
         footer {
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid #1a1a1a;
-            color: #666;
-            font-size: 13px;
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(51, 65, 85, 0.5);
             text-align: center;
+            color: #64748b;
+            font-size: 14px;
         }
         
-        .success {
-            color: #0f0;
+        .success-text {
+            color: #22c55e;
         }
         
-        .error {
-            color: #f00;
+        .error-text {
+            color: #ef4444;
         }
         
         @media (max-width: 768px) {
             body {
-                padding: 15px;
+                padding: 20px 15px;
             }
             
             h1 {
-                font-size: 20px;
+                font-size: 32px;
             }
             
             .counter-display {
-                font-size: 36px;
+                font-size: 48px;
+            }
+            
+            .grid {
+                grid-template-columns: 1fr;
             }
             
             button {
-                flex: 1;
-                min-width: calc(50% - 5px);
-            }
-            
-            input[type="text"] {
-                max-width: 100%;
+                min-width: 100px;
             }
         }
     </style>
@@ -209,56 +280,70 @@
     <div class="container">
         <header>
             <h1>RIN-Nairith Laravel DevOps</h1>
-            <p class="subtitle">CI/CD Pipeline with Jenkins, Docker & Ansible</p>
-            <div class="status">
+            <p class="subtitle">Modern CI/CD Pipeline with Jenkins, Docker & Ansible</p>
+            <div class="status-badge">
                 <span class="status-dot"></span>
                 <span id="status-text">System Online</span>
             </div>
         </header>
         
-        <section>
-            <h2>Counter</h2>
-            <div class="counter-display" id="counter">0</div>
-            <div class="button-group">
-                <button onclick="increment()">+ Increment</button>
-                <button onclick="decrement()">- Decrement</button>
-                <button onclick="reset()">Reset</button>
+        <div class="grid">
+            <div class="card">
+                <div class="card-title">
+                    <span class="icon">📊</span>
+                    Counter
+                </div>
+                <div class="counter-display" id="counter">0</div>
+                <div class="button-group">
+                    <button onclick="increment()">+ Increment</button>
+                    <button class="secondary" onclick="decrement()">- Decrement</button>
+                    <button class="success" onclick="reset()">Reset</button>
+                </div>
             </div>
-        </section>
-        
-        <section>
-            <h2>Greeting</h2>
-            <div class="input-group">
-                <input type="text" id="name-input" placeholder="Enter your name">
-                <button onclick="greet()">Greet</button>
+            
+            <div class="card">
+                <div class="card-title">
+                    <span class="icon">👋</span>
+                    Greeting
+                </div>
+                <div class="input-group">
+                    <input type="text" id="name-input" placeholder="Enter your name">
+                    <button onclick="greet()">Greet</button>
+                </div>
+                <div class="greeting-result" id="greeting-result"></div>
             </div>
-            <div class="greeting-result" id="greeting-result"></div>
-        </section>
+        </div>
         
-        <section>
-            <h2>Messages</h2>
+        <div class="card">
+            <div class="card-title">
+                <span class="icon">💬</span>
+                Messages
+            </div>
             <div class="message-box" id="message">Welcome to the dashboard</div>
             <button onclick="changeMessage()">Random Message</button>
-        </section>
+        </div>
         
-        <section>
-            <h2>System Info</h2>
+        <div class="card">
+            <div class="card-title">
+                <span class="icon">⚙️</span>
+                System Info
+            </div>
             <div class="tech-stack">
-                <span class="tech-badge">PHP {{ phpversion() }}</span>
-                <span class="tech-badge">Laravel 11</span>
-                <span class="tech-badge">Docker</span>
-                <span class="tech-badge">Jenkins</span>
-                <span class="tech-badge">Ansible</span>
+                <span class="tech-badge">🐘 PHP {{ phpversion() }}</span>
+                <span class="tech-badge">⚡ Laravel 11</span>
+                <span class="tech-badge">🐳 Docker</span>
+                <span class="tech-badge">⚙️ Jenkins</span>
+                <span class="tech-badge">🔧 Ansible</span>
             </div>
-            <div style="margin-top: 20px;">
+            <div class="button-group">
                 <button onclick="checkHealth()">Check Health</button>
-                <button onclick="showInfo()">About</button>
+                <button class="secondary" onclick="showInfo()">About</button>
             </div>
-        </section>
+        </div>
         
         <footer>
             <p>Server Time: <span id="server-time"></span></p>
-            <p style="margin-top: 8px;">Built with Laravel, Docker, Jenkins & Ansible</p>
+            <p style="margin-top: 10px;">Built with Laravel, Docker, Jenkins & Ansible</p>
         </footer>
     </div>
     
@@ -309,10 +394,10 @@
             const name = document.getElementById('name-input').value.trim();
             if (name) {
                 const greeting = greetings[Math.floor(Math.random() * greetings.length)];
-                document.getElementById('greeting-result').innerHTML = greeting + ', ' + name;
+                document.getElementById('greeting-result').innerHTML = '<span class="success-text">' + greeting + ', ' + name + '</span>';
                 document.getElementById('message').textContent = 'Welcome ' + name;
             } else {
-                document.getElementById('greeting-result').innerHTML = '<span class="error">Please enter your name</span>';
+                document.getElementById('greeting-result').innerHTML = '<span class="error-text">Please enter your name</span>';
             }
         }
         
@@ -321,10 +406,10 @@
             fetch('api/health')
                 .then(response => response.json())
                 .then(data => {
-                    document.getElementById('message').innerHTML = '<span class="success">Health Check: ' + data.status + ' - ' + data.message + '</span>';
+                    document.getElementById('message').innerHTML = '<span class="success-text">Health Check: ' + data.status + ' - ' + data.message + '</span>';
                 })
                 .catch(error => {
-                    document.getElementById('message').innerHTML = '<span class="error">Health check failed</span>';
+                    document.getElementById('message').innerHTML = '<span class="error-text">Health check failed</span>';
                 });
         }
         
