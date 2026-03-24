@@ -93,6 +93,21 @@
         state: directory
         mode: '0755'
 
+    - name: Create storage directories
+      file:
+        path: "{{ item }}"
+        state: directory
+        mode: '0755'
+      loop:
+        - "{{ app_path }}/storage/app"
+        - "{{ app_path }}/storage/app/public"
+        - "{{ app_path }}/storage/framework"
+        - "{{ app_path }}/storage/framework/cache"
+        - "{{ app_path }}/storage/framework/cache/data"
+        - "{{ app_path }}/storage/framework/sessions"
+        - "{{ app_path }}/storage/framework/views"
+        - "{{ app_path }}/storage/logs"
+
     - name: Create SQLite database
       file:
         path: "{{ app_path }}/database/database.sqlite"

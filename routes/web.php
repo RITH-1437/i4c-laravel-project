@@ -2,20 +2,17 @@
 
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-*/
-
 Route::get('/', function () {
-    return view('welcome');
+    return response()->json([
+        'name' => 'Laravel Application',
+        'status' => 'running',
+        'version' => '10.x'
+    ]);
 });
 
 Route::get('/health', function () {
     return response()->json([
         'status' => 'OK',
-        'message' => 'Application is running',
-        'timestamp' => now()->toDateTimeString()
+        'message' => 'Application is running'
     ]);
 });
