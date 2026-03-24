@@ -1,41 +1,41 @@
 version: '3.8'
 
 services:
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: laravel_app
-    restart: unless-stopped
-    working_dir: /var/www/html
-    ports:
-      - "8000:80"
-    volumes:
-      - .:/var/www/html
-    networks:
-      - laravel
-    environment:
-      - APP_ENV=local
-      - APP_DEBUG=true
-
   jenkins:
     image: jenkins/jenkins:lts
-    container_name: jenkins
+    container_name: jenkins-tp01
     restart: unless-stopped
     user: root
     ports:
-      - "8080:8080"
-      - "50000:50000"
+      - "8090:8080"
+      - "50002:50000"
     volumes:
       - jenkins_home:/var/jenkins_home
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
-      - laravel
+      - jenkins-network
+
+  laravel-agent:
+    build:
+      context: ./laravel-agent
+      dockerfile: Dockerfile
+    container_name: jenkins-laravel-agent
+    restart: unless-stopped
+    environment:
+      - JENKINS_URL=http://jenkins:8080
+      - JENKINS_AGENT_SSH_PUBKEY=ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCtl5ydhXxf5jbwA44A8vv8DbwoPDNMpjTCt5RR17isf8WahFTMZrluZGhXwFayTDYAWpHYb2g+Ys2/PXcAizgi+4LmfLXkcZ8eFghwDRrqBZVAQs0tAH6CLkynE0J8E+oB9w2hI8VnqcQeAoVdgN9cJvdrz6p4MkDmqwl0fkWTLKNY6YAO32O098Y70hYBt6I8Aa/U8tSMOPW4im9p//d84A7zCbMmqybdtHhIoa/+MWRP8OW60jwukrDApbi2g6Z8ZMeVzITxVUbUW3twHrkXRdoU1B7QCQ43AeL2XeRMzHcXDu1YzNaR3F8TZWpeu2rjwYx9DjBdek9Wr/r/q/xJ+vUdbYfRO41H4G1OSjZ1+qaYq6pdFkzwbfBoUs7V1onIAmZFdy96SJJdY5eaH9sXaCUwiIB/g0iPs0XNvN3s6fkHFrycJ/7WUOaSJ3nubNpmWDIrA4VMRG/dqfTknanazahqQ0c0wMD5TLhVnl04D4NhVcutbBa6I8oAZyn8gpR9DQ4b8YlCRAMjLFgR7rLEOwwyV0XA1LskRPoiYeCZcpmByx4t5qLan1ilxKK9Oudsw0ebtgAzcAh3C4HdzC3cxcsGmUIjPnNpw8DMec3GXIkM88gVkwnCxg8Qm44QYkNSDOAvOXwC/SW82jmoJvNU0SvV2JnEZMUfESOhxBjtyQ== administrator@DESKTOP-2BIHUSN
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./workspace:/workspace:ro
+    depends_on:
+      - jenkins
+    networks:
+      - jenkins-network
 
 volumes:
   jenkins_home:
     driver: local
 
 networks:
-  laravel:
+  jenkins-network:
     driver: bridge
