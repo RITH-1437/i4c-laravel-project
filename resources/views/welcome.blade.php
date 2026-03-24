@@ -12,15 +12,19 @@
             box-sizing: border-box;
         }
         
+        html, body {
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+        }
+        
         body {
             font-family: 'Inter', sans-serif;
             background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-            min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            overflow-x: hidden;
         }
         
         .bg-animation {
@@ -72,19 +76,32 @@
             position: relative;
             z-index: 1;
             text-align: center;
-            padding: 50px;
+            padding: 2vh 3vw;
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(20px);
-            border-radius: 24px;
+            border-radius: 20px;
             border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
-            max-width: 700px;
-            width: 90%;
+            max-width: 900px;
+            width: 90vw;
+            max-height: 95vh;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+        
+        .container::-webkit-scrollbar {
+            width: 0;
+            display: none;
+        }
+        
+        .container {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
         }
         
         h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
+            font-size: 2em;
+            margin-bottom: 0.5vh;
             font-weight: 700;
             background: linear-gradient(90deg, #667eea, #764ba2, #f093fb);
             -webkit-background-clip: text;
@@ -93,29 +110,29 @@
         }
         
         .subtitle {
-            font-size: 1.1em;
+            font-size: 0.95em;
             color: rgba(255, 255, 255, 0.7);
-            margin-bottom: 30px;
+            margin-bottom: 1.5vh;
         }
         
         .counter-box {
             background: rgba(102, 126, 234, 0.2);
-            border-radius: 16px;
-            padding: 25px;
-            margin: 25px 0;
+            border-radius: 12px;
+            padding: 1.5vh 2vw;
+            margin: 1vh 0;
             border: 1px solid rgba(102, 126, 234, 0.3);
         }
         
         .counter-label {
-            font-size: 0.9em;
+            font-size: 0.75em;
             color: rgba(255, 255, 255, 0.6);
-            margin-bottom: 10px;
+            margin-bottom: 0.5vh;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
         }
         
         .counter-value {
-            font-size: 4em;
+            font-size: 2.5em;
             font-weight: 700;
             color: #667eea;
             text-shadow: 0 0 30px rgba(102, 126, 234, 0.5);
@@ -123,23 +140,23 @@
         
         .button-group {
             display: flex;
-            gap: 15px;
+            gap: 10px;
             justify-content: center;
             flex-wrap: wrap;
-            margin: 30px 0;
+            margin: 1.5vh 0;
         }
         
         .btn {
-            padding: 14px 28px;
-            font-size: 1em;
+            padding: 10px 20px;
+            font-size: 0.9em;
             font-weight: 600;
             border: none;
-            border-radius: 12px;
+            border-radius: 10px;
             cursor: pointer;
             transition: all 0.3s ease;
-            display: flex;
+            display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
         
         .btn-primary {
@@ -178,19 +195,19 @@
         .tech-stack {
             display: flex;
             justify-content: center;
-            gap: 20px;
-            margin: 30px 0;
+            gap: 8px;
+            margin: 1.5vh 0;
             flex-wrap: wrap;
         }
         
         .tech-badge {
-            display: flex;
+            display: inline-flex;
             align-items: center;
-            gap: 8px;
-            padding: 10px 20px;
+            gap: 4px;
+            padding: 6px 12px;
             background: rgba(255, 255, 255, 0.1);
             border-radius: 50px;
-            font-size: 0.9em;
+            font-size: 0.75em;
             border: 1px solid rgba(255, 255, 255, 0.1);
             transition: all 0.3s ease;
         }
@@ -202,10 +219,10 @@
         
         .message-box {
             background: rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            padding: 20px;
-            margin: 20px 0;
-            min-height: 80px;
+            border-radius: 10px;
+            padding: 1.5vh 1vw;
+            margin: 1vh 0;
+            min-height: 6vh;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -213,26 +230,27 @@
         }
         
         .message-text {
-            font-size: 1.1em;
+            font-size: 0.95em;
             color: rgba(255, 255, 255, 0.9);
         }
         
         .input-group {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             justify-content: center;
-            margin: 20px 0;
+            margin: 1vh 0;
+            flex-wrap: wrap;
         }
         
         .input-group input {
-            padding: 12px 20px;
-            font-size: 1em;
+            padding: 10px 16px;
+            font-size: 0.9em;
             border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 10px;
             background: rgba(255, 255, 255, 0.1);
             color: white;
             outline: none;
-            width: 200px;
+            width: 180px;
             transition: all 0.3s ease;
         }
         
@@ -246,22 +264,22 @@
         }
         
         .footer {
-            margin-top: 30px;
-            padding-top: 20px;
+            margin-top: 1.5vh;
+            padding-top: 1.5vh;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
-            font-size: 0.85em;
+            font-size: 0.75em;
             color: rgba(255, 255, 255, 0.5);
         }
         
         .status-indicator {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            padding: 8px 16px;
+            gap: 6px;
+            padding: 6px 12px;
             background: rgba(56, 239, 125, 0.2);
             border-radius: 50px;
-            font-size: 0.85em;
-            margin-bottom: 20px;
+            font-size: 0.75em;
+            margin-bottom: 1vh;
         }
         
         .status-dot {
@@ -278,13 +296,58 @@
         }
         
         .greeting-input {
-            margin: 20px 0;
+            margin: 1vh 0;
         }
         
         .greeting-result {
-            font-size: 1.5em;
-            margin-top: 15px;
-            min-height: 40px;
+            font-size: 1.1em;
+            margin-top: 1vh;
+            min-height: 3vh;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.5em;
+            }
+            
+            .subtitle {
+                font-size: 0.85em;
+            }
+            
+            .counter-value {
+                font-size: 2em;
+            }
+            
+            .btn {
+                padding: 8px 16px;
+                font-size: 0.85em;
+            }
+            
+            .tech-badge {
+                font-size: 0.7em;
+                padding: 5px 10px;
+            }
+            
+            .container {
+                width: 95vw;
+                padding: 2vh 4vw;
+            }
+            
+            .input-group {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .input-group input {
+                width: 100%;
+                max-width: 250px;
+            }
+        }
+        
+        @media (min-width: 1920px) {
+            .container {
+                max-width: 1100px;
+            }
         }
     </style>
 </head>
