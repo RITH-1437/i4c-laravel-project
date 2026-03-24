@@ -411,7 +411,7 @@
         
         <div class="tech-stack">
             <span class="tech-badge">🐘 PHP {{ phpversion() }}</span>
-            <span class="tech-badge">⚡ Laravel 10</span>
+            <span class="tech-badge">⚡ Laravel 11</span>
             <span class="tech-badge">🐳 Docker</span>
             <span class="tech-badge">⚙️ Jenkins</span>
             <span class="tech-badge">🔧 Ansible</span>
