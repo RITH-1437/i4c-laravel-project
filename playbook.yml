@@ -61,6 +61,7 @@
 
     - name: Install PHP dependencies with Composer
       composer:
+        command: update
         working_dir: "{{ app_path }}"
         no_dev: no
         no_scripts: yes
